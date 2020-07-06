@@ -486,8 +486,9 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
         if(annotationElement.isRange) {
           num left = annotationElement.annotation.startPosition < _drawAreaBounds.left ? _drawAreaBounds.left : annotationElement.annotation.startPosition;
           num width = annotationElement.annotation.endPosition - left;
-          if( width > _drawAreaBounds.width - _drawAreaBounds.left ) {
-            width = _drawAreaBounds.width;
+          if( left + width > _drawAreaBounds.left + _drawAreaBounds.width ) {
+            num dx = left + width - (_drawAreaBounds.left + _drawAreaBounds.width);
+            width -= dx;
           }
           bounds = Rectangle<num>(
             left,
