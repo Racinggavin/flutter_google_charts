@@ -483,12 +483,26 @@ class _RangeAnnotationLayoutView<D> extends LayoutView {
 
     switch (annotationElement.annotation.axisType) {
       case RangeAnnotationAxisType.domain:
-        bounds = Rectangle<num>(
-            annotationElement.annotation.startPosition,
+        if(annotationElement.isRange) {
+          num left = annotationElement.annotation.startPosition < _drawAreaBounds.left ? _drawAreaBounds.left : annotationElement.annotation.startPosition;
+          num width = annotationElement.annotation.endPosition - left;
+          if( width > _drawAreaBounds.width - _drawAreaBounds.left ) {
+            width = _drawAreaBounds.width;
+          }
+          bounds = Rectangle<num>(
+            left,
             _drawAreaBounds.top,
-            annotationElement.annotation.endPosition -
-                annotationElement.annotation.startPosition,
+            width,
             _drawAreaBounds.height);
+        }
+        else {
+          bounds = Rectangle<num>(
+              annotationElement.annotation.startPosition,
+              _drawAreaBounds.top,
+              annotationElement.annotation.endPosition -
+                  annotationElement.annotation.startPosition,
+              _drawAreaBounds.height);
+        }
         break;
 
       case RangeAnnotationAxisType.measure:
